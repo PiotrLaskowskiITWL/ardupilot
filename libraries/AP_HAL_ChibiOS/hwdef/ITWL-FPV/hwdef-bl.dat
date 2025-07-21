@@ -1,0 +1,50 @@
+# hw definition file for processing by chibios_hwdef.py
+# for the ITWL-FPV hardware
+
+# MCU class and specific type
+MCU STM32H7xx STM32H743xx
+
+# board ID for firmware load
+APJ_BOARD_ID AP_HW_ITWL-FPV
+
+# crystal frequency
+OSCILLATOR_HZ 12000000
+
+# flash size
+FLASH_SIZE_KB 2048
+
+# bootloader is installed at zero offset
+FLASH_RESERVE_START_KB 0
+
+# the location where the bootloader will put the firmware
+FLASH_BOOTLOADER_LOAD_KB 128
+
+# order of UARTs (and USB)
+SERIAL_ORDER OTG1 UART8 USART1
+
+# USB
+PB14 OTG_HS_DM OTG1
+PB15 OTG_HS_DP OTG1
+PB13 VBUS INPUT OPENDRAIN
+
+# pins for SWD debugging
+PA13 JTMS-SWDIO SWD
+PA14 JTCK-SWCLK SWD
+
+# CS pins
+PE3 CS_IMU1 CS
+PE4 CS_BARO1 CS
+PC13 CS_EEPROM CS
+
+# Telem1
+PE1 UART8_TX UART8
+PE0 UART8_RX UART8
+
+# Telem2
+PA9  USART1_TX USART1
+PA10 USART1_RX USART1
+
+# LEDs
+PC4 LED_ACTIVITY OUTPUT LOW GPIO(32)    #green
+PA4 LED_BOOTLOADER  OUTPUT LOW GPIO(28) #blue
+define HAL_LED_ON 1
