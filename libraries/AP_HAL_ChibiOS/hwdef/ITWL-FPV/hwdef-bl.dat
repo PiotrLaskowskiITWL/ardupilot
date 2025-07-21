@@ -10,7 +10,7 @@ APJ_BOARD_ID AP_HW_ITWL-FPV
 # crystal frequency, setup to use external oscillator
 OSCILLATOR_HZ 12000000
 
-MCU_CLOCKRATE_MHZ 400
+# MCU_CLOCKRATE_MHZ 400
 
 FLASH_SIZE_KB 2048
 
