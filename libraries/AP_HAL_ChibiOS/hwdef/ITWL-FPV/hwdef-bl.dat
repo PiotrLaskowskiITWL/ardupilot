@@ -21,7 +21,8 @@ FLASH_SIZE_KB 2048
 FLASH_RESERVE_START_KB 0
 
 # the location where the bootloader will put the firmware
-FLASH_BOOTLOADER_LOAD_KB 24	#obecnie zajmuje 21kB
+FLASH_BOOTLOADER_LOAD_KB 128	#obecnie zajmuje 21kB, ale rozmiar sektora to 128kB
+
 
 # order of UARTs (and USB)
 SERIAL_ORDER OTG1 UART8

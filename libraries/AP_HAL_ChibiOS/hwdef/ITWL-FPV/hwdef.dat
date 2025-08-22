@@ -59,12 +59,7 @@ USB_STRING_MANUFACTURER "ArduPilot"
 # bootloader takes first sector
 FLASH_RESERVE_START_KB 128
 
-# ChibiOS system timer
-STM32_ST_USE_TIMER 12
-define CH_CFG_ST_RESOLUTION 16
-
-define HAL_STORAGE_SIZE 32768
-STORAGE_FLASH_PAGE 14
+#define CH_CFG_ST_RESOLUTION 16
 
 # To be compatible with the px4 bootloader we use a different RAM_MAP
 env USE_ALT_RAM_MAP 1
