@@ -10,6 +10,9 @@ APJ_BOARD_ID AP_HW_ITWL-FPV
 # crystal frequency, setup to use external oscillator
 OSCILLATOR_HZ 24000000
 
+# ChibiOS system timer
+STM32_ST_USE_TIMER 5
+
 # MCU_CLOCKRATE_MHZ 400
 
 FLASH_SIZE_KB 2048
@@ -18,10 +21,13 @@ FLASH_SIZE_KB 2048
 FLASH_RESERVE_START_KB 0
 
 # the location where the bootloader will put the firmware
-FLASH_BOOTLOADER_LOAD_KB 384
+FLASH_BOOTLOADER_LOAD_KB 24	#obecnie zajmuje 21kB
 
 # order of UARTs (and USB)
 SERIAL_ORDER OTG1 UART8
+
+# USB setup
+USB_STRING_MANUFACTURER "ArduPilot"
 
 # USB
 PB14 OTG_HS_DM OTG1
@@ -32,11 +38,14 @@ PB13 VBUS INPUT OPENDRAIN
 PE1 UART8_TX UART8
 PE0 UART8_RX UART8
 
+# baudrate to run bootloader at on uarts
+define BOOTLOADER_BAUDRATE 115200
+
 # pins for SWD debugging
 PA13 JTMS-SWDIO SWD
 PA14 JTCK-SWCLK SWD
 
-# Chip select pins
+# Add CS pins to ensure they are high in bootloader
 PE3 CS_IMU1 CS
 PE4 CS_BARO1 CS
 PC13 CS_EEPROM CS
