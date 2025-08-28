@@ -1,0 +1,61 @@
+Waf: Entering directory `/home/piotr/ardupilot/build/fmuv3'
+Checking for env.py
+env added ENABLE_DFU_BOOT=0
+env added WITH_FATFS=1
+env added PROCESS_STACK=0x1C00
+env added MAIN_STACK=0x600
+env added IOMCU_FW=0
+env added IOMCU_FW_WITH_HEATER=0
+env added PERIPH_FW=0
+env added HAL_NUM_CAN_IFACES=2
+env added HAL_CANFD_SUPPORTED=0
+env added BOARD_FLASH_SIZE=2048
+env added EXT_FLASH_SIZE_MB=0
+env added INT_FLASH_PRIMARY=False
+env added ENABLE_CRASHDUMP=True
+env appended CPU_FLAGS=['-mcpu=cortex-m4', '-mfpu=fpv4-sp-d16', '-mfloat-abi=hard', '-DARM_MATH_CM4', '-u_printf_float']
+env added CORTEX=cortex-m4
+env added APJ_BOARD_ID=9
+env added APJ_BOARD_TYPE=STM32F427xx
+env added USBID=0x1209/0x5741
+env added FLASH_RESERVE_START_KB=16
+env added EXT_FLASH_RESERVE_START_KB=0
+env added FLASH_TOTAL=2080768
+env added HAS_EXTERNAL_FLASH_SECTIONS=0
+env added CHIBIOS_BUILD_FLAGS=USE_FATFS=yes CHIBIOS_STARTUP_MK=os/common/startup/ARMCMx/compilers/GCC/mk/startup_stm32f4xx.mk CHIBIOS_PLATFORM_MK=os/hal/ports/STM32/STM32F4xx/platform.mk MCU=cortex-m4 ENV_UDEFS=-DCHPRINTF_USE_FLOAT=1
+Embedding file bootloader.bin:/home/piotr/ardupilot/Tools/bootloaders/fmuv3_bl.bin
+Embedding file hwdef.dat:/home/piotr/ardupilot/build/fmuv3/hw.dat
+Embedding file io_firmware.bin:Tools/IO_Firmware/iofirmware_lowpolh.bin
+12:34:29 [35mrunner[0m ['/usr/bin/git', 'rev-parse', '--short=8', 'HEAD']
+12:34:29 [35mrunner[0m ['/usr/bin/git', 'rev-parse', '--short=8', 'HEAD']
+12:34:29 [35mrunner[0m ['/usr/bin/git', 'rev-parse', '--short=8', 'HEAD']
+12:34:29 [35mrunner[0m ('/usr/bin/git', 'submodule', 'status', '--recursive', '--', '/home/piotr/ardupilot/modules/ChibiOS')
+12:34:29 [35mrunner[0m ('/usr/bin/git', 'submodule', 'status', '--recursive', '--', '/home/piotr/ardupilot/modules/littlefs')
+12:34:29 [35mrunner[0m ('/usr/bin/git', 'submodule', 'status', '--recursive', '--', '/home/piotr/ardupilot/modules/mavlink')
+Generating compile_commands.json
+Build commands will be stored in build/fmuv3/compile_commands.json
+Generating compile_commands.json
+Build commands will be stored in build/fmuv3/compile_commands.json
+[1236/1242] Linking build/fmuv3/bin/arducopter
+12:34:42 [35mrunner[0m ['/usr/lib/ccache/arm-none-eabi-g++', '-mcpu=cortex-m4', '-mfpu=fpv4-sp-d16', '-mfloat-abi=hard', '-DARM_MATH_CM4', '-u_printf_float', '-fomit-frame-pointer', '-falign-functions=16', '-ffunction-sections', '-fdata-sections', '-u_port_lock', '-u_port_unlock', '-u_exit', '-u_kill', '-u_getpid', '-u_errno', '-uchThdExit', '-fno-common', '-nostartfiles', '-mno-thumb-interwork', '-mthumb', '--specs=nano.specs', '--specs=nosys.specs', '-L/home/piotr/ardupilot/build/fmuv3', '-L/home/piotr/ardupilot/modules/ChibiOS/os/common/startup/ARMCMx/compilers/GCC/ld', '-L/home/piotr/ardupilot/libraries/AP_HAL_ChibiOS/hwdef/common', '-Wl,-Map,Linker.map,--cref,--gc-sections,--no-warn-mismatch,--library-path=/ld,--script=ldscript.ld,--defsym=__process_stack_size__=0x1C00,--defsym=__main_stack_size__=0x600', '-Wl,-whole-archive', 'modules/ChibiOS/libcc.a', '-Wl,-no-whole-archive', '-Wl,--wrap,sscanf', '-Wl,--wrap,fprintf', '-Wl,--wrap,snprintf', '-Wl,--wrap,vsnprintf', '-Wl,--wrap,vasprintf', '-Wl,--wrap,asprintf', '-Wl,--wrap,vprintf', '-Wl,--wrap,scanf', '-Wl,--wrap,printf', '-Wl,--wrap,_sbrk', '-Wl,--wrap,_sbrk_r', '-Wl,--wrap,_malloc_r', '-Wl,--wrap,_calloc_r', '-Wl,--wrap,_free_r', '-Wl,--wrap,ftell', '-Wl,--wrap,realloc', '-Wl,--wrap,fopen', '-Wl,--wrap,fflush', '-Wl,--wrap,fwrite', '-Wl,--wrap,fread', '-Wl,--wrap,fputs', '-Wl,--wrap,fgets', '-Wl,--wrap,clearerr', '-Wl,--wrap,fseek', '-Wl,--wrap,ferror', '-Wl,--wrap,fclose', '-Wl,--wrap,tmpfile', '-Wl,--wrap,getc', '-Wl,--wrap,ungetc', '-Wl,--wrap,feof', '-Wl,--wrap,ftell', '-Wl,--wrap,freopen', '-Wl,--wrap,remove', '-Wl,--wrap,vfprintf', '-Wl,--wrap,vfprintf_r', '-Wl,--wrap,fscanf', '-Wl,--wrap,_gettimeofday', '-Wl,--wrap,_times', '-Wl,--wrap,_times_r', '-Wl,--wrap,_gettimeofday_r', '-Wl,--wrap,time', '-Wl,--wrap,clock', '-Wl,--wrap,gmtime', 'ArduCopter/AP_Arming_Copter.cpp.51.o', 'ArduCopter/AP_ExternalControl_Copter.cpp.51.o', 'ArduCopter/AP_Rally.cpp.51.o', 'ArduCopter/AP_State.cpp.51.o', 'ArduCopter/Attitude.cpp.51.o', 'ArduCopter/Copter.cpp.51.o', 'ArduCopter/GCS_Copter.cpp.51.o', 'ArduCopter/GCS_MAVLink_Copter.cpp.51.o', 'ArduCopter/Log.cpp.51.o', 'ArduCopter/Parameters.cpp.51.o', 'ArduCopter/RC_Channel_Copter.cpp.51.o', 'ArduCopter/UserCode.cpp.51.o', 'ArduCopter/UserParameters.cpp.51.o', 'ArduCopter/afs_copter.cpp.51.o', 'ArduCopter/autoyaw.cpp.51.o', 'ArduCopter/avoidance.cpp.51.o', 'ArduCopter/avoidance_adsb.cpp.51.o', 'ArduCopter/baro_ground_effect.cpp.51.o', 'ArduCopter/commands.cpp.51.o', 'ArduCopter/compassmot.cpp.51.o', 'ArduCopter/crash_check.cpp.51.o', 'ArduCopter/ekf_check.cpp.51.o', 'ArduCopter/esc_calibration.cpp.51.o', 'ArduCopter/events.cpp.51.o', 'ArduCopter/failsafe.cpp.51.o', 'ArduCopter/fence.cpp.51.o', 'ArduCopter/heli.cpp.51.o', 'ArduCopter/inertia.cpp.51.o', 'ArduCopter/land_detector.cpp.51.o', 'ArduCopter/landing_gear.cpp.51.o', 'ArduCopter/mode.cpp.51.o', 'ArduCopter/mode_acro.cpp.51.o', 'ArduCopter/mode_acro_heli.cpp.51.o', 'ArduCopter/mode_althold.cpp.51.o', 'ArduCopter/mode_auto.cpp.51.o', 'ArduCopter/mode_autorotate.cpp.51.o', 'ArduCopter/mode_autotune.cpp.51.o', 'ArduCopter/mode_avoid_adsb.cpp.51.o', 'ArduCopter/mode_brake.cpp.51.o', 'ArduCopter/mode_circle.cpp.51.o', 'ArduCopter/mode_drift.cpp.51.o', 'ArduCopter/mode_flip.cpp.51.o', 'ArduCopter/mode_flowhold.cpp.51.o', 'ArduCopter/mode_follow.cpp.51.o', 'ArduCopter/mode_guided.cpp.51.o', 'ArduCopter/mode_guided_custom.cpp.51.o', 'ArduCopter/mode_guided_nogps.cpp.51.o', 'ArduCopter/mode_land.cpp.51.o', 'ArduCopter/mode_loiter.cpp.51.o', 'ArduCopter/mode_poshold.cpp.51.o', 'ArduCopter/mode_rtl.cpp.51.o', 'ArduCopter/mode_smart_rtl.cpp.51.o', 'ArduCopter/mode_sport.cpp.51.o', 'ArduCopter/mode_stabilize.cpp.51.o', 'ArduCopter/mode_stabilize_heli.cpp.51.o', 'ArduCopter/mode_systemid.cpp.51.o', 'ArduCopter/mode_throw.cpp.51.o', 'ArduCopter/mode_turtle.cpp.51.o', 'ArduCopter/mode_zigzag.cpp.51.o', 'ArduCopter/motor_test.cpp.51.o', 'ArduCopter/motors.cpp.51.o', 'ArduCopter/navigation.cpp.51.o', 'ArduCopter/precision_landing.cpp.51.o', 'ArduCopter/radio.cpp.51.o', 'ArduCopter/rate_thread.cpp.51.o', 'ArduCopter/sensors.cpp.51.o', 'ArduCopter/standby.cpp.51.o', 'ArduCopter/surface_tracking.cpp.51.o', 'ArduCopter/system.cpp.51.o', 'ArduCopter/takeoff.cpp.51.o', 'ArduCopter/takeoff_check.cpp.51.o', 'ArduCopter/terrain.cpp.51.o', 'ArduCopter/toy_mode.cpp.51.o', 'ArduCopter/tuning.cpp.51.o', '-obin/arducopter', '-Wl,-Bstatic', '-Llib', '-lArduCopter_libs', '-Wl,-Bdynamic', '-Lmodules/ChibiOS/', '-lgcc', '-lm', '-lDSP', '-lch']
+[1237/1242] Generating bin/arducopter.bin
+12:34:43 [35mrunner[0m ['/opt/gcc-arm-none-eabi-10-2020-q4-major/bin/arm-none-eabi-objcopy', '-O', 'binary', 'bin/arducopter', 'bin/arducopter.bin']
+[1238/1242] checking symbols build/fmuv3/bin/arducopter
+[1239/1242] app_descriptor set_app_descriptor: build/fmuv3/bin/arducopter build/fmuv3/bin/arducopter.bin
+No APP_DESCRIPTOR found
+[1240/1242] apj_gen build/fmuv3/bin/arducopter.bin
+12:34:43 [35mrunner[0m ['/usr/bin/git', 'rev-parse', '--short=8', 'HEAD']
+[1241/1242] bin cleanup build/fmuv3/bin/arducopter.bin
+[1242/1242] Generating bin/arducopter_with_bl.hex
+12:34:43 [35mrunner[0m ['/home/piotr/ardupilot/Tools/scripts/make_intel_hex.py', 'bin/arducopter.bin', '../../Tools/bootloaders/fmuv3_bl.bin', '16']
+Waf: Leaving directory `/home/piotr/ardupilot/build/fmuv3'
+
+BUILD SUMMARY
+Build directory: /home/piotr/ardupilot/build/fmuv3
+12:34:43 [35mrunner[0m ['/opt/gcc-arm-none-eabi-10-2020-q4-major/bin/arm-none-eabi-size', '-A', 'bin/arducopter']
+12:34:43 [35mrunner[0m ['/opt/gcc-arm-none-eabi-10-2020-q4-major/bin/arm-none-eabi-size', 'bin/arducopter']
+Target          Text (B)  Data (B)  BSS (B)  Total Flash Used (B)  Free Flash (B)  External Flash Used (B)
+----------------------------------------------------------------------------------------------------------
+bin/arducopter   1546220      4176   192588               1550396          530364  Not Applicable         
+
+'copter' finished successfully (14.835s)

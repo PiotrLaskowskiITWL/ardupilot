@@ -55,7 +55,7 @@
 import sys
 import argparse
 import binascii
-import serial
+#import serial
 import struct
 import json
 import zlib

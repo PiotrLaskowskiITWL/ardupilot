@@ -32,6 +32,7 @@ APJ_BOARD_ID AP_HW_ITWL-FPV
 # crystal frequency
 OSCILLATOR_HZ 24000000
 
+
 # On some boards you will need to also set the various PLL values. See
 # the defaults in common/mcuconf.h, and use the define mechanism
 # explained later in this file to override values suitable for your
@@ -328,6 +329,10 @@ IMU Invensense SPI:icm42688 ROTATION_ROLL_180_YAW_90
 # Setup for the possibility of an IMU heater since the pixhawk2 cube has
 # an IMU heater.
 #PB10 HEATER_EN OUTPUT LOW GPIO(80)
-PB2  HEATER OUTPUT GPIO(36) HIGH
-define HAL_HAVE_IMU_HEATER 1
-define HAL_HEATER_GPIO_PIN 80
+# PB2  HEATER OUTPUT GPIO(36) HIGH
+# define HAL_HAVE_IMU_HEATER 1
+# define HAL_HEATER_GPIO_PIN 80
+
+
+BOOTLOADER 0x08000000 0x20000
+define AP_RANGEFINDER_ENABLED 0
