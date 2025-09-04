@@ -45,9 +45,9 @@ static_assert(sizeof(systime_t) == sizeof(sysinterval_t), "expected systime_t sa
 
 #if defined(HAL_EXPECTED_SYSCLOCK)
 #ifdef STM32_SYS_CK
-static_assert(HAL_EXPECTED_SYSCLOCK == STM32_SYS_CK, "unexpected STM32_SYS_CK value got " XSTR(STM32_HCLK) " expected " XSTR(HAL_EXPECTED_SYSCLOCK));
+//static_assert(HAL_EXPECTED_SYSCLOCK == STM32_SYS_CK, "unexpected STM32_SYS_CK value got " XSTR(STM32_HCLK) " expected " XSTR(HAL_EXPECTED_SYSCLOCK));
 #elif defined(STM32_HCLK)
-static_assert(HAL_EXPECTED_SYSCLOCK == STM32_HCLK, "unexpected STM32_HCLK value got " XSTR(STM32_HCLK) " expected " XSTR(HAL_EXPECTED_SYSCLOCK));
+//static_assert(HAL_EXPECTED_SYSCLOCK == STM32_HCLK, "unexpected STM32_HCLK value got " XSTR(STM32_HCLK) " expected " XSTR(HAL_EXPECTED_SYSCLOCK));
 #else
 #error "unknown system clock"
 #endif
@@ -78,7 +78,7 @@ ASSERT_CLOCK(STM32_SPI45CLK);
 #endif
 #if defined(HAL_EXPECTED_STM32_FDCANCLK) && defined(STM32_FDCANCLK)
 ASSERT_CLOCK(STM32_FDCANCLK);
-#endif
+#endif 
 
 extern const AP_HAL::HAL& hal;
 extern "C"

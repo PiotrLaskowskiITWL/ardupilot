@@ -1,3 +1,6 @@
+
+
+
 # hw definition file for processing by chibios_hwdef.py
 # for the ITWL-FPV hardware
 
@@ -31,7 +34,9 @@ APJ_BOARD_ID AP_HW_ITWL-FPV
 
 # crystal frequency
 OSCILLATOR_HZ 24000000
+MCU_CLOCKRATE_MHZ 480
 
+# define HAL_DISABLE_DCACHE
 
 # On some boards you will need to also set the various PLL values. See
 # the defaults in common/mcuconf.h, and use the define mechanism
@@ -42,7 +47,9 @@ OSCILLATOR_HZ 24000000
 # driver. This must be a 32 bit timer. We currently only support
 # timers 2, 3, 4, 5 and 21. See hal_st_lld.c in ChibiOS for details.
 # ChibiOS system timer
+# STM32_ST_USE_TIMER 12
 STM32_ST_USE_TIMER 5
+# define CH_CFG_ST_RESOLUTION 16
 
 # Now the size of flash in kilobytes, for creating the ld.script.
 # flash size
@@ -59,11 +66,15 @@ USB_STRING_MANUFACTURER "ArduPilot"
 
 # bootloader takes first sector
 FLASH_RESERVE_START_KB 128
+#FLASH_RESERVE_START_KB 0
 
-#define CH_CFG_ST_RESOLUTION 16
+#define HAL_STORAGE_SIZE 16384
+#define STORAGE_FLASH_PAGE 1
 
 # To be compatible with the px4 bootloader we use a different RAM_MAP
-env USE_ALT_RAM_MAP 1
+#env USE_ALT_RAM_MAP 1
+#MAIN_STACK 0x1800
+#PROCESS_STACK 0x1800
 
 # Now the serial ordering. These map to the SERIALn_ parameter numbers
 # If you use a shorter list then HAL_Empty::UARTDriver
@@ -77,7 +88,9 @@ env USE_ALT_RAM_MAP 1
 # 5) SERIAL4: GPS2
 # 6) SERIAL5: extra UART (usually RTOS debug console)
 # order of UARTs (and USB)
-SERIAL_ORDER OTG1 UART8 USART1 USART2 USART3 UART4 EMPTY EMPTY UART7
+#SERIAL_ORDER OTG1 UART8 USART1 USART2 USART3 UART4 
+SERIAL_ORDER UART8 USART1 USART2 USART3 UART4 
+# OTG1 and OTG2 are USB devices (1x physical USB connection enumerated as 2x logical ports)
 
 # Now we start on the pin definitions. Every pin used by ArduPilot
 # needs to be in this file. The pins in this file can be defined in any order.
@@ -114,16 +127,20 @@ SERIAL_ORDER OTG1 UART8 USART1 USART2 USART3 UART4 EMPTY EMPTY UART7
 # RX pins.
 
 # USB
-PB14 OTG_HS_DM OTG1
-PB15 OTG_HS_DP OTG1
+#PB14 OTG_HS_DM OTG1
+#PB15 OTG_HS_DP OTG1
 
 # This is the pin that senses USB being connected. It is an input pin
 # setup as OPENDRAIN.
-PB13 VBUS INPUT OPENDRAIN
+#PB13 VBUS INPUT OPENDRAIN
 
 # TELEM1
 PE1 UART8_TX UART8
 PE0 UART8_RX UART8
+
+# debug on UART8
+STDOUT_SERIAL SD8
+STDOUT_BAUDRATE 57600
 
 # GPS1
 PD8 USART3_TX USART3
@@ -146,18 +163,19 @@ PD5 USART2_TX USART2
 define DEFAULT_SERIAL4_PROTOCOL SerialProtocol_None
 
 # ESC Telemetry (RX only)
-PE8 UART7_TX UART7 NODMA
-PE7 UART7_RX UART7 NODMA
-define DEFAULT_SERIAL5_PROTOCOL SerialProtocol_ESCTelemetry
-define DEFAULT_SERIAL5_BAUD 115
+# PE8 UART7_TX UART7 NODMA
+# PE7 UART7_RX UART7 NODMA
+# define DEFAULT_SERIAL5_PROTOCOL SerialProtocol_ESCTelemetry
+# define DEFAULT_SERIAL5_BAUD 115
 
 # CAN bus
 PA11 CAN1_RX CAN1
 PA12 CAN1_TX CAN1
 
 # CAN bus
-PB5 CAN2_RX CAN2
-PB6 CAN2_TX CAN2
+#PB5 CAN2_RX CAN2
+#PB6 CAN2_TX CAN2
+
 
 # SWD (Serial Wire Debug)
 PA13 JTMS-SWDIO SWD
@@ -170,74 +188,78 @@ PA14 JTCK-SWCLK SWD
 # I2C2 is our internal bus, so we need to setup the order as I2C2
 # followed by I2C1 in order to achieve the conventional order that
 # drivers expect.
-I2C_ORDER I2C1 I2C2 I2C4	#GPS1, GPS2, IMU
+#I2C_ORDER I2C1 I2C2 I2C4	#GPS1, GPS2, IMU
 
 # I2C1 - Connector 1
-PB8 I2C1_SCL I2C1   
-PB9 I2C1_SDA I2C1   
+#PB8 I2C1_SCL I2C1   
+#PB9 I2C1_SDA I2C1   
 
 # I2C2 - Connector 2
-PB10 I2C2_SCL I2C2   
-PB11 I2C2_SDA I2C2   
+#PB10 I2C2_SCL I2C2   
+#PB11 I2C2_SDA I2C2   
 
 # I2C4 - Magnetometr
-PD12 I2C4_SCL I2C4   
-PD13 I2C4_SDA I2C4   
+#PD12 I2C4_SCL I2C4   
+#PD13 I2C4_SDA I2C4   
 
 # This defines the default maximum clock on I2C devices.
-define HAL_I2C_MAX_CLOCK 100000
+#define HAL_I2C_MAX_CLOCK 100000
 
 # PWM output pins
-PE14 TIM1_CH4 TIM1  PWM(1) GPIO(44) BIDIR
-PE13 TIM1_CH3 TIM1  PWM(2) GPIO(43)	
-PE11 TIM1_CH2 TIM1  PWM(3) GPIO(41) BIDIR
-PE9  TIM1_CH1 TIM1  PWM(4) GPIO(39)	
-PA3  TIM2_CH4 TIM2  PWM(5) GPIO(25) 
-PA2  TIM2_CH3 TIM2  PWM(6) GPIO(24)
-PA1  TIM2_CH2 TIM2  PWM(7) GPIO(23) 
-PA0  TIM2_CH1 TIM2  PWM(8) GPIO(22)
-PB0  TIM3_CH3 TIM3  PWM(9) GPIO(34) 
-# PB1  TIM3_CH4 TIM3  PWM(10) GPIO(35)   #buzzer
-PC6  TIM3_CH1 TIM3  PWM(11) GPIO(63)   #S-Bus out
-PC7  TIM3_CH2 TIM3  PWM(12) GPIO(64)   #S-Bus In
+PE14 TIM1_CH4 TIM1  PWM(1) GPIO(50)
+PE13 TIM1_CH3 TIM1  PWM(2) GPIO(51)	
+PE11 TIM1_CH2 TIM1  PWM(3) GPIO(52) 
+PE9  TIM1_CH1 TIM1  PWM(4) GPIO(53)	
+PA3  TIM2_CH4 TIM2  PWM(5) GPIO(54) 
+PA2  TIM2_CH3 TIM2  PWM(6) GPIO(55)
+PA1  TIM2_CH2 TIM2  PWM(7) GPIO(56) 
+PA0  TIM2_CH1 TIM2  PWM(8) GPIO(57)
+PB0  TIM3_CH3 TIM3  PWM(9) GPIO(58) 
+# PB1  TIM3_CH4 TIM3  PWM(10) GPIO(59)   #buzzer
+#PC6  TIM3_CH1 TIM3  PWM(11) GPIO(60)   #S-Bus out
+#PC7  TIM3_CH2 TIM3  PWM(12) GPIO(61)   #S-Bus In
 
-define HAL_FRAME_TYPE_DEFAULT 12
+#testowo_wyłaczone define HAL_FRAME_TYPE_DEFAULT 12
 
-# RGB LED
-#PA5 TIM2_CH1 TIM2 PWM(9) GPIO(58)
 
 
 # This defines the PWM pin for the buzzer (if there is one). It is
 # also mapped to a GPIO output so you can play with the buzzer via
 # MAVLink relay commands if you want to.
 # PWM output for buzzer
-PB1 TIM3_CH4 TIM3 GPIO(35) ALARM
+#testowo_wyłaczone PB1 TIM3_CH4 TIM3 GPIO(77) ALARM
 
 # GPIOs
-PD10 PINIO1 OUTPUT GPIO(57) LOW
-PD11 PINIO2 OUTPUT GPIO(58) LOW
+PD10 PINIO1 OUTPUT GPIO(80) LOW
+PD11 PINIO2 OUTPUT GPIO(81) LOW
+#testowo_wyłaczonePA8  PAD1 INPUT
+#testowo_wyłaczonePB12 PAD3 INPUT
+#testowo_wyłaczonePB3  NC1  INPUT
+#testowo_wyłaczonePB4  NC2  INPUT
+#testowo_wyłaczonePB7  NC3  INPUT
+#testowo_wyłaczonePD3  NC4  INPUT
+#testowo_wyłaczonePD4  NC5  INPUT
+#testowo_wyłaczonePE15 NC6  INPUT
 
 # LEDs
-PC5 LED_RED OUTPUT LOW GPIO(33)   
-PC4 LED_GREEN OUTPUT LOW GPIO(32)   
-PA4 LED_BLUE  OUTPUT LOW GPIO(28)   
+PC5 LED_RED OUTPUT OPENDRAIN LOW GPIO(1)   
+PC4 LED_GREEN OUTPUT OPENDRAIN LOW GPIO(2)   
+PA4 LED_BLUE  OUTPUT OPENDRAIN LOW GPIO(3)   
 
-define HAL_GPIO_A_LED_PIN 33   #
-define HAL_GPIO_B_LED_PIN 32   #
-define HAL_GPIO_C_LED_PIN 28 
+define HAL_GPIO_A_LED_PIN 1   #
+define HAL_GPIO_B_LED_PIN 2   #
+define HAL_GPIO_C_LED_PIN 3 
 
-define HAL_GPIO_LED_ON 1   #
-define AP_NOTIFY_GPIO_LED_2_ENABLED 1   #
+define AP_NOTIFY_GPIO_LED_RGB_RED_PIN 1
+define AP_NOTIFY_GPIO_LED_RGB_GREEN_PIN 1
+define AP_NOTIFY_GPIO_LED_RGB_BLUE_PIN 2
+
+
+#define HAL_GPIO_LED_ON 1   #
+#define AP_NOTIFY_GPIO_LED_2_ENABLED 1   #
 
 # This defines some input pins, currently unused.
-PA8  PAD1 INPUT
-PB12 PAD3 INPUT
-PB3  NC1  INPUT
-PB4  NC2  INPUT
-PB7  NC3  INPUT
-PD3  NC4  INPUT
-PD4  NC5  INPUT
-PE15 NC6  INPUT
+
 
 
 # Now define the primary battery connectors. The labels we choose here
@@ -249,7 +271,7 @@ PE15 NC6  INPUT
 # tables in STM32F427xx.py.
 # ADC Probes
 PC2 BATT_VOLTAGE_SENS ADC1 SCALE(1)
-PC3 BATT_CURRENT_SENS ADC2 SCALE(1)
+PC3 BATT_CURRENT_SENS ADC1 SCALE(1)
 # Analog battery input scaling
 # See folder hwdef>scripts>STM32H743xx.py
 define HAL_BATT_VOLT_PIN 3
@@ -261,23 +283,24 @@ define HAL_BATT_CURR_SCALE 40.0
 
 # no built-in compass, but probe the i2c bus for all possible
 # external compass types
-define ALLOW_ARM_NO_COMPASS
-define HAL_PROBE_EXTERNAL_I2C_COMPASSES
+#testowo_wyłaczone define ALLOW_ARM_NO_COMPASS
+#testowo_wyłaczone define HAL_PROBE_EXTERNAL_I2C_COMPASSES
 
 
 # Now the first SPI bus. At minimum you need SCK, MISO and MOSI pin
-definitions. You can add speed modifiers if you want them, otherwise
-the defaults for the peripheral class are used.
+# definitions. You can add speed modifiers if you want them, otherwise
+# the defaults for the peripheral class are used.
 
 # SPI1 - EEPROM
-PA5  SPI1_SCK  SPI1
-PA6  SPI1_MISO SPI1
-PA7  SPI1_MOSI SPI1
-PC13 CS_EEPROM CS
+#PA5  SPI1_SCK  SPI1
+#PA6  SPI1_MISO SPI1
+#PA7  SPI1_MOSI SPI1
+#PC13 CS_EEPROM CS
 
 # We need to tell HAL_ChibiOS/Storage.cpp how much storage is
 # available (in bytes).
-define HAL_STORAGE_SIZE 16384	#M95160-WMN6TP ma 16kB
+#define HAL_STORAGE_SIZE 16384	#M95160-WMN6TP ma 16kB
+define HAL_STORAGE_SIZE 1024
 
 # SPI4 - IMU / Baro
 PE2 SPI4_SCK SPI4
@@ -288,18 +311,19 @@ PE4 CS_BARO1 CS
 
 # BARO DPS310 I2C:0:0x76
 # COMPASS
-COMPASS MMC3416 I2C:0:0x60 false ROTATION_NONE
+#COMPASS MMC3416 I2C:0:0x60 false ROTATION_NONE
 
 # microSD card
-PC8 SDMMC1_D0 SDMMC1
-PC9 SDMMC1_D1 SDMMC1
-PC10 SDMMC1_D2 SDMMC1
-PC11 SDMMC1_D3 SDMMC1
-PC12 SDMMC1_CK SDMMC1
-PD2 SDMMC1_CMD SDMMC1
+#PC8 SDMMC1_D0 SDMMC1
+#PC9 SDMMC1_D1 SDMMC1
+#PC10 SDMMC1_D2 SDMMC1
+#PC11 SDMMC1_D3 SDMMC1
+#PC12 SDMMC1_CK SDMMC1
+#PD2 SDMMC1_CMD SDMMC1
 
 # Enable FAT filesystem support (needs a microSD defined via SDMMC).
-define HAL_OS_FATFS_IO 1
+#define HAL_OS_FATFS_IO 1
+#define FATFS_HAL_DEVICE SDCD1
 
 # Now the SPI device table. This table creates all accessible SPI
 # devices, giving the name of the device (which is used by device
@@ -317,22 +341,33 @@ define HAL_OS_FATFS_IO 1
 # of ArduPilot so users don't need to re-do their accel and compass
 # calibrations when moving to ChibiOS.
 # SPI devices
-SPIDEV eeprom   SPI1 DEVID1 CS_EEPROM MODE3 2*MHZ  10*MHZ
+#SPIDEV eeprom   SPI1 DEVID1 CS_EEPROM MODE3 2*MHZ  10*MHZ
 #SPIDEV icm42653 SPI4 DEVID1 CS_IMU1 MODE3  2*MHZ  8*MHZ
 SPIDEV icm42688 SPI4 DEVID1 CS_IMU1 MODE3  2*MHZ  8*MHZ
 SPIDEV bmp581   SPI4 DEVID2 CS_BARO1 MODE3  2*MHZ  8*MHZ
+
+
+#DMA_PRIORITY SDMMC* USART6* ADC* UART* USART* SPI* TIM*
 
 # IMUs
 # IMU Invensensev3 SPI:icm42653 ROTATION_ROLL_180_YAW_90      #docelowy uklad, obrót do ustalenia
 IMU Invensense SPI:icm42688 ROTATION_ROLL_180_YAW_90
 
-# Setup for the possibility of an IMU heater since the pixhawk2 cube has
-# an IMU heater.
+# Setup for the possibility of an IMU heater 
 #PB10 HEATER_EN OUTPUT LOW GPIO(80)
-# PB2  HEATER OUTPUT GPIO(36) HIGH
-# define HAL_HAVE_IMU_HEATER 1
-# define HAL_HEATER_GPIO_PIN 80
+#PB2  HEATER OUTPUT GPIO(36) HIGH
+#define HAL_HAVE_IMU_HEATER 1
+#define HAL_HEATER_GPIO_PIN 80
+#define HAL_IMU_TEMP_DEFAULT 25
+#define HAL_IMUHEAT_P_DEFAULT 50
+#define HAL_IMUHEAT_I_DEFAULT 0.07
+#define HAL_IMU_TEMP_MARGIN_LOW_DEFAULT 5
+
 
 
 BOOTLOADER 0x08000000 0x20000
 define AP_RANGEFINDER_ENABLED 0
+
+# AP_HAL_CHIBIOS::EXTRA_SOURCES libraries/AP_HAL_ChibiOS/itwl_cpu_init.c
+define CRT0_FORCE_MSP_INIT TRUE
+define CRT0_INIT_FPU TRUE
