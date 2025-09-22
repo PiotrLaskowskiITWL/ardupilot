@@ -136,7 +136,8 @@ extern const AP_HAL::HAL& hal;
 #define INV3_ID_ICM40605      0x33
 #define INV3_ID_ICM40609      0x3b
 #define INV3_ID_ICM42605      0x42
-#define INV3_ID_ICM42688      0x47
+//#define INV3_ID_ICM42688      0x47
+#define INV3_ID_ICM42688      0xDB      //to jest właściwa wartość rejestro WHO_AMI
 #define INV3_ID_IIM42652      0x6f
 #define INV3_ID_IIM42653      0x56
 #define INV3_ID_ICM42670      0x67
