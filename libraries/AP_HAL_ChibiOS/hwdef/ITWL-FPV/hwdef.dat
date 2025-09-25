@@ -65,36 +65,34 @@ FLASH_RESERVE_START_KB 128
 #MAIN_STACK 0x1800
 #PROCESS_STACK 0x1800
 
+# SWD (Serial Wire Debug) 
+PA13 JTMS-SWDIO SWD
+PA14 JTCK-SWCLK SWD
 
+
+##############################################################################################
 # USB
 # This is the pin that senses USB being connected. It is an input pin
 # setup as OPENDRAIN.
 
-PB13 VBUS INPUT OPENDRAIN
-PB14 OTG_HS_DM OTG1
-PB15 OTG_HS_DP OTG1
+# USB HS - taka samą konfigrację ma Holybro KakuteH7Mini
+# PB13 VBUS INPUT OPENDRAIN
+# PB14 OTG_HS_DM OTG1
+# PB15 OTG_HS_DP OTG1
+
+# USB FS
+PA9 VBUS INPUT OPENDRAIN
+PA11 OTG_FS_DM OTG1
+PA12 OTG_FS_DP OTG1
+
+
+
 
 # define STM32_OTG2_IS_OTG1 TRUE
 # define STM32_USB_USE_OTG2 TRUE
 # define STM32_USB_USE_OTG1 TRUE
 # define HAL_USE_USB 1
 # define HAL_HAVE_DUAL_USB_CDC 1
-
-
-# Now the serial ordering. These map to the SERIALn_ parameter numbers
-# If you use a shorter list then HAL_Empty::UARTDriver
-# objects are substituted for later UARTs, or you can leave a gap by
-# listing one or more of the uarts as EMPTY.
-# The normal usage of this ordering is:
-# 1) SERIAL0: console (primary mavlink, usually USB)
-# 2) SERIAL1: telem1
-# 3) SERIAL2: telem2
-# 4) SERIAL3: primary GPS
-# 5) SERIAL4: GPS2
-# 6) SERIAL5: extra UART (usually RTOS debug console)
-# order of UARTs (and USB)
-SERIAL_ORDER OTG1 UART8 USART1 USART2 USART3 UART7 UART4
-# OTG1 and OTG2 are USB devices (1x physical USB connection enumerated as 2x logical ports)
 
 # Now we start on the pin definitions. Every pin used by ArduPilot
 # needs to be in this file. The pins in this file can be defined in any order.
@@ -118,45 +116,50 @@ SERIAL_ORDER OTG1 UART8 USART1 USART2 USART3 UART7 UART4
 # out type: OPENDRAIN, PUSHPULL
 # default value: LOW, HIGH
 
-# Additionally, each class of pin peripheral can have extra modifiers
-# suitable for that pin type. For example, for an OUTPUT you can map
-# it to a GPIO number in hal.gpio using the GPIO(n) modifier. For ADC
-# inputs you can apply a scaling factor (to bring it to unit volts)
-# using the SCALE(x) modifier. See the examples below for more
-# modifiers, or read the python code in chibios_hwdef.py.
 
-# Now we define UART4 which is for the GPS. Be careful
-# of the difference between USART and UART. Check the STM32F427xx.py
-# if unsure which it is. For a UART we need to specify at least TX and
-# RX pins.
+##############################################################################################
+# Now the serial ordering. These map to the SERIALn_ parameter numbers
+# If you use a shorter list then HAL_Empty::UARTDriver
+# objects are substituted for later UARTs, or you can leave a gap by
+# listing one or more of the uarts as EMPTY.
+# The normal usage of this ordering is:
+# 1) SERIAL0: console (primary mavlink, usually USB) (na razie USB nie działa)
+# 2) SERIAL1: telem1: UART8  
+# 3) SERIAL2: telem2: USART1
+# 4) SERIAL3: primary GPS: USART3
+# 5) SERIAL4: GPS2: UART4
+# 6) SERIAL5: extra UART: USART2 
+# 7) SERIAL6: debug console:  UART7
+# order of UARTs (and USB)
+# SERIAL_ORDER OTG1 UART8 USART1 USART3 UART4 USART2 UART7  
+SERIAL_ORDER OTG1 UART8 USART3 UART4 UART7 OTG2 #bez USART2 USART1
 
-
-
-# TELEM1
+# TELEM1 - SERIAL1
 PE1 UART8_TX UART8
 PE0 UART8_RX UART8
+define DEFAULT_SERIAL1_PROTOCOL SerialProtocol_MAVLink2
 
-# GPS1
+# TELEM2 - SERIAL2
+# PA9  USART1_TX USART1
+# PA10 USART1_RX USART1
+# define DEFAULT_SERIAL2_PROTOCOL SerialProtocol_None
+
+# GPS1 - SERIAL3
 PD8 USART3_TX USART3
 PD9 USART3_RX USART3
-define DEFAULT_SERIAL2_PROTOCOL SerialProtocol_GPS
-
-# GPS2
-PD1 UART4_TX UART4
-PD0 UART4_RX UART4
 define DEFAULT_SERIAL3_PROTOCOL SerialProtocol_GPS
 
-# TELEM2
-PA9  USART1_TX USART1
-PA10 USART1_RX USART1
-define DEFAULT_SERIAL4_PROTOCOL SerialProtocol_None
+# GPS2 - SERIAL4, UART4
+PD1 UART4_TX UART4
+PD0 UART4_RX UART4
+define DEFAULT_SERIAL4_PROTOCOL SerialProtocol_GPS
 
-# TELEM3
-PD6 USART2_RX USART2
-PD5 USART2_TX USART2
-define DEFAULT_SERIAL5_PROTOCOL SerialProtocol_None
+# TELEM3 - SERIAL 5
+# PD6 USART2_RX USART2
+# PD5 USART2_TX USART2
+# define DEFAULT_SERIAL5_PROTOCOL SerialProtocol_None
 
-# ESC Telemetry (RX only)
+# ESC Telemetry (RX only) SERIAL6
 PE8 UART7_TX UART7 
 PE7 UART7_RX UART7 
 
@@ -164,7 +167,9 @@ PE7 UART7_RX UART7
 STDOUT_SERIAL SD7
 STDOUT_BAUDRATE 115200
 
-# CAN bus
+
+##############################################################################################
+# CAN bus 
 #PA11 CAN1_RX CAN1
 #PA12 CAN1_TX CAN1
 
@@ -173,10 +178,7 @@ PB5 CAN2_RX CAN2
 PB6 CAN2_TX CAN2
 
 
-# SWD (Serial Wire Debug)
-PA13 JTMS-SWDIO SWD
-PA14 JTCK-SWCLK SWD
-
+##############################################################################################
 # Now define the order that I2C buses are presented in the hal.i2c API
 # in ArduPilot. For historical reasons inherited from HAL_PX4 the
 # 'external' I2C bus should be bus 1 in hal.i2c, and internal I2C bus
@@ -186,21 +188,33 @@ PA14 JTCK-SWCLK SWD
 # drivers expect.
 I2C_ORDER I2C4 I2C1 I2C2 	#IMU, GPS1, GPS2
 
-# I2C1 - Connector 1
+# I2C1 - Złącze GPS1 1
 PB8 I2C1_SCL I2C1   
 PB9 I2C1_SDA I2C1   
 
-# I2C2 - Connector 2
+# I2C2 - Złacze GPS2 2
 PB10 I2C2_SCL I2C2   
 PB11 I2C2_SDA I2C2   
 
-# I2C4 - Magnetometr
+# I2C4 - Magnetometr na module IMU
 PD12 I2C4_SCL I2C4   
 PD13 I2C4_SDA I2C4   
 
 # This defines the default maximum clock on I2C devices.
 #define HAL_I2C_MAX_CLOCK 100000
 
+# COMPASS
+define AP_PERIPH_MAG_ENABLED 1
+COMPASS MMC3416 I2C:0:0x30 false ROTATION_YAW_270
+define HAL_COMPASS_MAX_SENSORS 3
+
+# no built-in compass, but probe the i2c bus for all possible
+# external compass types
+#define ALLOW_ARM_NO_COMPASS
+define HAL_PROBE_EXTERNAL_I2C_COMPASSES
+
+
+##############################################################################################
 # PWM output pins
 PE14 TIM1_CH4 TIM1  PWM(1) GPIO(50)
 PE13 TIM1_CH3 TIM1  PWM(2) GPIO(51)	
@@ -219,14 +233,13 @@ PC7  TIM3_CH2 TIM3  PWM(12) GPIO(61)
 #PC6  TIM3_CH1 TIM3  PWM(11) GPIO(60)   #S-Bus out
 #PC7  TIM3_CH2 TIM3  PWM(12) GPIO(61)   #S-Bus In
 
-
-
 # This defines the PWM pin for the buzzer (if there is one). It is
 # also mapped to a GPIO output so you can play with the buzzer via
 # MAVLink relay commands if you want to.
 # PWM output for buzzer
 #testowo_wyłaczone PB1 TIM3_CH4 TIM3 GPIO(77) ALARM
 
+##############################################################################################
 # GPIOs
 PD10 PINIO1 OUTPUT GPIO(81) LOW
 PD11 PINIO2 OUTPUT GPIO(82) LOW
@@ -263,11 +276,7 @@ define AP_NOTIFY_GPIO_LED_RGB_GREEN_PIN 2
 define AP_NOTIFY_GPIO_LED_RGB_BLUE_PIN 3
 
 
-#define HAL_GPIO_LED_ON 1   #
-#define AP_NOTIFY_GPIO_LED_2_ENABLED 1   #
-
-
-
+##############################################################################################
 # Now define the primary battery connectors. The labels we choose here
 # are used to create defines for pins in the various drivers, so
 # choose names that match existing board setups where possible. Here
@@ -295,6 +304,8 @@ define HAL_BATT_CURR_PIN 12
 define HAL_ADC_SENSOR1_PIN  10
 define HAL_ADC_SENSOR2_PIN  11
 
+
+##############################################################################################
 # Now the first SPI bus. At minimum you need SCK, MISO and MOSI pin
 # definitions. You can add speed modifiers if you want them, otherwise
 # the defaults for the peripheral class are used.
@@ -306,28 +317,6 @@ PE6 SPI4_MOSI SPI4
 PE3 CS_IMU CS
 PE4 CS_BARO CS
 define HAL_BARO_ALLOW_INIT_NO_BARO
-
-# COMPASS
-define AP_PERIPH_MAG_ENABLED 1
-COMPASS MMC3416 I2C:0:0x30 false ROTATION_YAW_270
-define HAL_COMPASS_MAX_SENSORS 1
-
-# no built-in compass, but probe the i2c bus for all possible
-# external compass types
-#define ALLOW_ARM_NO_COMPASS
-#define HAL_PROBE_EXTERNAL_I2C_COMPASSES
-
-# microSD card
-PC8 SDMMC1_D0 SDMMC1
-PC9 SDMMC1_D1 SDMMC1
-PC10 SDMMC1_D2 SDMMC1
-PC11 SDMMC1_D3 SDMMC1
-PC12 SDMMC1_CK SDMMC1
-PD2 SDMMC1_CMD SDMMC1
-
-# Enable FAT filesystem support (needs a microSD defined via SDMMC).
-define HAL_OS_FATFS_IO 1
-define FATFS_HAL_DEVICE SDCD1
 
 # Now the SPI device table. This table creates all accessible SPI
 # devices, giving the name of the device (which is used by device
@@ -348,8 +337,7 @@ define FATFS_HAL_DEVICE SDCD1
 #SPIDEV eeprom   SPI1 DEVID1 CS_EEPROM MODE3 2*MHZ  10*MHZ
 #SPIDEV icm42653 SPI4 DEVID1 CS_IMU MODE3  2*MHZ  8*MHZ
 SPIDEV icm42688 SPI4 DEVID1 CS_IMU MODE0  2*MHZ  8*MHZ
-SPIDEV bmp581   SPI4 DEVID2 CS_BARO MODE3  1*MHZ  8*MHZ
-
+SPIDEV bmp581   SPI4 DEVID2 CS_BARO MODE0  2*MHZ  8*MHZ
 
 #DMA_PRIORITY SDMMC* USART6* ADC* UART* USART* SPI* TIM*
 
@@ -357,12 +345,10 @@ SPIDEV bmp581   SPI4 DEVID2 CS_BARO MODE3  1*MHZ  8*MHZ
 # IMU Invensensev3 SPI:icm42653 ROTATION_ROLL_180_YAW_90      #docelowy uklad, obrót do ustalenia
 IMU Invensensev3 SPI:icm42688 ROTATION_ROLL_180
 
-
 #define AP_BARO_MSP_ENABLED 1
 #define AP_BARO_SPI_BUS 4
 #define AP_BARO_CS_PIN PE4
 BARO BMP581 SPI:bmp581
-
 
 # Setup for the possibility of an IMU heater 
 PB2 HEATER OUTPUT GPIO(80) HIGH
@@ -375,11 +361,15 @@ define HAL_IMUHEAT_I_DEFAULT 0.07
 define HAL_IMU_TEMP_MARGIN_LOW_DEFAULT 3
 
 
+##############################################################################################
+# microSD card
+PC8 SDMMC1_D0 SDMMC1
+PC9 SDMMC1_D1 SDMMC1
+PC10 SDMMC1_D2 SDMMC1
+PC11 SDMMC1_D3 SDMMC1
+PC12 SDMMC1_CK SDMMC1
+PD2 SDMMC1_CMD SDMMC1
 
-
-#define AP_RANGEFINDER_ENABLED 0
-
-# AP_HAL_CHIBIOS::EXTRA_SOURCES libraries/AP_HAL_ChibiOS/itwl_cpu_init.c
-#define CRT0_FORCE_MSP_INIT TRUE
-#define CRT0_INIT_FPU TRUE
-#define BRD_OPTIONS 0   #wyłączenie watchdoga
+# Enable FAT filesystem support (needs a microSD defined via SDMMC).
+define HAL_OS_FATFS_IO 1
+define FATFS_HAL_DEVICE SDCD1
