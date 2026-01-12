@@ -1,0 +1,33 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "ardupilot",
+			"configName": "ITWL-FPV1_1-bootloader",
+			"overrideEnabled": false,
+			"group": {
+				"kind": "build"
+			},
+			"configure": "ITWL-FPV1_1",
+			"target": "bootloader",
+			"configureOptions": "",
+			"buildOptions": "",
+			"waffile": "/home/piotr/ardupilot/waf",
+			"nm": "arm-none-eabi-nm"
+		},
+		{
+			"type": "ardupilot",
+			"configName": "ITWL-FPV1_1-AP_Periph",
+			"overrideEnabled": false,
+			"group": {
+				"kind": "build"
+			},
+			"configure": "ITWL-FPV1_1",
+			"target": "AP_Periph",
+			"configureOptions": "",
+			"buildOptions": "",
+			"waffile": "/home/piotr/ardupilot/waf",
+			"nm": "arm-none-eabi-nm"
+		}
+	]
+}

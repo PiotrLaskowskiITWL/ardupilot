@@ -1,0 +1,223 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug ITWL-FPV1_1 arducopter (OpenOCD WSL, jtag-lock-pick_tiny2)",
+      "type": "cortex-debug",
+      "request": "attach",
+      "servertype": "openocd",
+      "cwd": "${workspaceRoot}",
+      "executable": "${workspaceRoot}/build/ITWL-FPV1_1/bin/arducopter",
+      "gdbPath": "/usr/bin/arm-none-eabi-gdb",
+      "configFiles": [
+        "interface/ftdi/jtag-lock-pick_tiny_2.cfg",
+        "target/stm32h7x_dual_bank.cfg"
+      ],
+      "openOCDLaunchCommands": [
+        "transport select swd",
+        "adapter speed 1000"
+      ],
+      "postRestartCommands": [
+        "monitor reset halt"
+      ],
+      "showDevDebugOutput": "raw",
+      "pathMapping": {
+        "/home/user/ardupilot": "C:/Projekty/autopilot/ardupilot"
+      }
+    },
+    {
+      "name": "Debug ITWL-FPV1_1 arducopter (OpenOCD WSL, ST Link)",
+      "type": "cortex-debug",
+      "request": "attach",
+      "servertype": "openocd",
+      "cwd": "${workspaceRoot}",
+      "executable": "${workspaceRoot}/build/ITWL-FPV1_1/bin/arducopter",
+      "gdbPath": "/usr/bin/arm-none-eabi-gdb",
+      "configFiles": [
+        "interface/stlink-v2-1.cfg",
+        "target/stm32h7x_dual_bank.cfg"
+      ],
+      "openOCDLaunchCommands": [
+        "adapter speed 1000"
+      ],
+      "postRestartCommands": [
+        "monitor reset halt"
+      ],
+      "showDevDebugOutput": "raw",
+      "pathMapping": {
+        "/home/user/ardupilot": "C:/Projekty/autopilot/ardupilot"
+      }
+    },
+    {
+      "name": "Debug ITWL-FPV1_1 bootloader (OpenOCD WSL, ST Link)",
+      "type": "cortex-debug",
+      "debuggerType": "gdb",
+      "request": "attach",
+      "servertype": "openocd",
+      "gdbTarget": "localhost:3333",
+      "cwd": "${workspaceRoot}",
+      "executable": "${workspaceFolder}/Tools/bootloaders/ITWL-FPV1_1_bl.elf",
+      "gdbPath": "/usr/bin/arm-none-eabi-gdb",
+      "showDevDebugOutput": "raw",
+      "runToEntryPoint": "Reset_Handler",
+      "configFiles": [
+        "interface/stlink-v2-1.cfg",
+        "target/stm32h7x_dual_bank.cfg"
+      ],
+      "openOCDLaunchCommands": [
+        "adapter speed 1000"
+      ],
+      "postRestartCommands": [
+        "monitor reset halt"
+      ],
+      "pathMapping": {
+        "/home/user/ardupilot": "C:/Projekty/autopilot/ardupilot"
+      }
+    },
+    {
+      "name": "Debug ITWL-FPV1_1 (STLINK)",
+      "type": "cortex-debug",
+      "request": "attach",
+      "servertype": "openocd",
+      "gdbTarget": "localhost:3333",
+      "gdbPath": "/usr/bin/arm-none-eabi-gdb",
+      "openOCDPath": "/usr/bin/openocd",
+      "configFiles": [
+        "interface/stlink-v2-1.cfg",
+        "target/stm32h7x_dual_bank.cfg"
+      ],
+      "device": "STM32H743ZI",
+      "svdFile": "${workspaceFolder}/Tools/debug/STM32H7x.svd",
+      "executable": "${workspaceFolder}/Tools/bootloaders/ITWL-FPV1_1_bl.elf",
+      "runToEntryPoint": "Reset_Handler",
+      "enableDebugConsole": true,
+      "showDevDebugOutput": "raw",
+      "postRestartCommands": [
+        "monitor reset halt"
+      ]
+    },
+    {
+      "name": "Debug ITWL-FPV1_1 (jtag-lock-pick_tiny2)",
+      "type": "cortex-debug",
+      "request": "attach",
+      "servertype": "external",
+      "gdbTarget": "localhost:3333",
+      "gdbPath": "/usr/bin/arm-none-eabi-gdb",
+      "cwd": "${workspaceRoot}",
+      "executable": "${workspaceRoot}/build/ITWL-FPV1_1/bin/arducopter",
+      "device": "STM32H743ZI",
+      "svdFile": "${workspaceFolder}/Tools/debug/STM32H7x.svd",
+      "showDevDebugOutput": "raw",
+      "postRestartCommands": [
+        "monitor reset halt"
+      ],
+      "pathMapping": {
+        "/home/user/ardupilot": "C:/Projekty/autopilot/ardupilot"
+      },
+      "overrideLaunchCommands": [
+        "target remote localhost:3333"
+      ]
+    },
+    {
+      "name": "Debug ITWL-FPV1_1 (ST-Link V3)",
+      "type": "cortex-debug",
+      "request": "launch",
+      "servertype": "openocd",
+      "cwd": "${workspaceRoot}",
+      "executable": "${workspaceRoot}/build/ITWL-FPV1_1/bin/arducopter",
+      "device": "STM32H743ZI",
+      "configFiles": [
+        "interface/stlink.cfg",
+        "target/stm32h7x_dual_bank.cfg"
+      ],
+      "postRestartCommands": [
+        "monitor reset halt"
+      ],
+      "svdFile": "${workspaceRoot}/STM32H743.svd",
+      "pathMapping": {
+        "/home/user/ardupilot": "C:/Projekty/autopilot/ardupilot"
+      },
+      "setupCommands": [
+        {
+          "text": "set index-cache off"
+        }
+      ]
+    },
+    {
+      "name": "Debug Bootloader ITWL-FPV1_1 (jtag-lock-pick_tiny2)",
+      "type": "cortex-debug",
+      "servertype": "external",
+      "gdbTarget": "localhost:3333",
+      "request": "attach",
+      "cwd": "${workspaceRoot}",
+      "executable": "${workspaceFolder}/Tools/bootloaders/ITWL-FPV1_1_bl.elf",
+      "device": "STM32H743ZI",
+      "showDevDebugOutput": "raw",
+      "preLaunchTask": "",
+      "postRestartCommands": [
+        "monitor reset halt"
+      ],
+      "pathMapping": {
+        "/home/user/ardupilot": "C:/Projekty/autopilot/ardupilot"
+      },
+      "overrideLaunchCommands": [
+        "target remote localhost:3333"
+      ]
+    },
+    {
+      "name": "Attach to OpenOCD bootloader (STM32H7)",
+      "type": "cortex-debug",
+      "request": "attach",
+      "servertype": "external",
+      "gdbTarget": "localhost:3333",
+      "executable": "${workspaceFolder}/Tools/bootloaders/ITWL-FPV1_1_bl.elf",
+      "gdbPath": "/usr/bin/gdb-multiarch",
+      "device": "STM32H743ZI",
+      "showDevDebugOutput": "raw",
+      "postRestartCommands": [
+        "monitor reset halt"
+      ]
+    },
+    {
+      "name": "Attach to OpenOCD ardupilot (STM32H7)",
+      "type": "cortex-debug",
+      "request": "attach",
+      "servertype": "external",
+      "gdbTarget": "localhost:3333",
+      "executable": "${workspaceRoot}/build/ITWL-FPV1_1/bin/arducopter",
+      "gdbPath": "/usr/bin/gdb-multiarch",
+      "device": "STM32H743ZI",
+      "showDevDebugOutput": "raw",
+      "postRestartCommands": [
+        "monitor reset halt"
+      ]
+    },
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "cppdbg",
+      "request": "launch",
+      "args": [],
+      "stopAtEntry": false,
+      "externalConsole": false,
+      "cwd": "/home/piotr/ardupilot",
+      "program": "/home/piotr/ardupilot/build/Debug/outDebug",
+      "MIMode": "gdb",
+      "miDebuggerPath": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
+    },
+    {
+      "name": "Launch Ardupilot",
+      "type": "apLaunch",
+      "request": "launch",
+      "target": "bootloader",
+      "isSITL": false,
+      "board": "ITWL-FPV1_1"
+    }
+  ]
+}
