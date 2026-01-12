@@ -28,7 +28,7 @@
     {
       "name": "Debug ITWL-FPV1_1 arducopter (OpenOCD WSL, ST Link)",
       "type": "cortex-debug",
-      "request": "attach",
+      "request": "launch",
       "servertype": "openocd",
       "cwd": "${workspaceRoot}",
       "executable": "${workspaceRoot}/build/ITWL-FPV1_1/bin/arducopter",
@@ -52,7 +52,7 @@
       "name": "Debug ITWL-FPV1_1 bootloader (OpenOCD WSL, ST Link)",
       "type": "cortex-debug",
       "debuggerType": "gdb",
-      "request": "attach",
+      "request": "launch",
       "servertype": "openocd",
       "gdbTarget": "localhost:3333",
       "cwd": "${workspaceRoot}",
