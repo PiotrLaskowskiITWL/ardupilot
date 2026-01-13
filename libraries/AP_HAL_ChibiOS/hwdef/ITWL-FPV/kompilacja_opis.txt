@@ -3,9 +3,6 @@ cd ardupilot
 ./waf configure --board ITWL-FPV --vs-launch --debug --enable-asserts
 ./waf copter --board ITWL-FPV
 
-//token classic
-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
-
 //opis
 --vs-launch <-generuje konfigurację .vscode/settings
 --board ITWL-FPV <- wybór autopilota
