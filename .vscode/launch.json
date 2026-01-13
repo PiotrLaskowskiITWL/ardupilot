@@ -2,12 +2,12 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug ITWL-FPV1_1 arducopter (OpenOCD WSL, jtag-lock-pick_tiny2)",
+      "name": "Debug ITWL-FPV arducopter (OpenOCD WSL, jtag-lock-pick_tiny2)",
       "type": "cortex-debug",
       "request": "attach",
       "servertype": "openocd",
       "cwd": "${workspaceRoot}",
-      "executable": "${workspaceRoot}/build/ITWL-FPV1_1/bin/arducopter",
+      "executable": "${workspaceRoot}/build/ITWL-FPV/bin/arducopter",
       "gdbPath": "/usr/bin/arm-none-eabi-gdb",
       "configFiles": [
         "interface/ftdi/jtag-lock-pick_tiny_2.cfg",
@@ -26,12 +26,12 @@
       }
     },
     {
-      "name": "Debug ITWL-FPV1_1 arducopter (OpenOCD WSL, ST Link)",
+      "name": "Debug ITWL-FPV arducopter (OpenOCD WSL, ST Link)",
       "type": "cortex-debug",
       "request": "launch",
       "servertype": "openocd",
       "cwd": "${workspaceRoot}",
-      "executable": "${workspaceRoot}/build/ITWL-FPV1_1/bin/arducopter",
+      "executable": "${workspaceRoot}/build/ITWL-FPV/bin/arducopter",
       "gdbPath": "/usr/bin/arm-none-eabi-gdb",
       "configFiles": [
         "interface/stlink-v2-1.cfg",
@@ -49,14 +49,14 @@
       }
     },
     {
-      "name": "Debug ITWL-FPV1_1 bootloader (OpenOCD WSL, ST Link)",
+      "name": "Debug ITWL-FPV bootloader (OpenOCD WSL, ST Link)",
       "type": "cortex-debug",
       "debuggerType": "gdb",
       "request": "launch",
       "servertype": "openocd",
       "gdbTarget": "localhost:3333",
       "cwd": "${workspaceRoot}",
-      "executable": "${workspaceFolder}/Tools/bootloaders/ITWL-FPV1_1_bl.elf",
+      "executable": "${workspaceFolder}/Tools/bootloaders/ITWL-FPV_bl.elf",
       "gdbPath": "/usr/bin/arm-none-eabi-gdb",
       "showDevDebugOutput": "raw",
       "runToEntryPoint": "Reset_Handler",
@@ -75,7 +75,7 @@
       }
     },
     {
-      "name": "Debug ITWL-FPV1_1 (STLINK)",
+      "name": "Debug ITWL-FPV (STLINK)",
       "type": "cortex-debug",
       "request": "attach",
       "servertype": "openocd",
@@ -88,7 +88,7 @@
       ],
       "device": "STM32H743ZI",
       "svdFile": "${workspaceFolder}/Tools/debug/STM32H7x.svd",
-      "executable": "${workspaceFolder}/Tools/bootloaders/ITWL-FPV1_1_bl.elf",
+      "executable": "${workspaceFolder}/Tools/bootloaders/ITWL-FPV_bl.elf",
       "runToEntryPoint": "Reset_Handler",
       "enableDebugConsole": true,
       "showDevDebugOutput": "raw",
@@ -97,14 +97,14 @@
       ]
     },
     {
-      "name": "Debug ITWL-FPV1_1 (jtag-lock-pick_tiny2)",
+      "name": "Debug ITWL-FPV (jtag-lock-pick_tiny2)",
       "type": "cortex-debug",
       "request": "attach",
       "servertype": "external",
       "gdbTarget": "localhost:3333",
       "gdbPath": "/usr/bin/arm-none-eabi-gdb",
       "cwd": "${workspaceRoot}",
-      "executable": "${workspaceRoot}/build/ITWL-FPV1_1/bin/arducopter",
+      "executable": "${workspaceRoot}/build/ITWL-FPV/bin/arducopter",
       "device": "STM32H743ZI",
       "svdFile": "${workspaceFolder}/Tools/debug/STM32H7x.svd",
       "showDevDebugOutput": "raw",
@@ -119,12 +119,12 @@
       ]
     },
     {
-      "name": "Debug ITWL-FPV1_1 (ST-Link V3)",
+      "name": "Debug ITWL-FPV (ST-Link V3)",
       "type": "cortex-debug",
       "request": "launch",
       "servertype": "openocd",
       "cwd": "${workspaceRoot}",
-      "executable": "${workspaceRoot}/build/ITWL-FPV1_1/bin/arducopter",
+      "executable": "${workspaceRoot}/build/ITWL-FPV/bin/arducopter",
       "device": "STM32H743ZI",
       "configFiles": [
         "interface/stlink.cfg",

@@ -6,19 +6,17 @@
 - ICM42653 IMU 
 - BMP581 barometer
 - MMC34160 magnetometer
+- EEPROM Memory
 - SDCARD
-- USB FS
 - 6x UART
-- 10x PWM
-- 3x I2C
-- 1x CAN
+- 12x PWM
+- 2x I2C
+- 2x CAN
 - 2x GPIOs
-- OSD via SPI1
-- camera switch
 
 ## Pinout
 
-![ITWL-FPV1_1](AEDROX_FC_H7_PINOUT.png "ITWL-FPV")
+![ITWL-FPV](AEDROX_FC_H7_PINOUT.png "ITWL-FPV")
 
 ## UART Mapping
 
@@ -43,27 +41,35 @@ The default RC input is configured on the UART3 (RX3/SBUS). Non SBUS,  single wi
 
 ## OSD Support
 
-Onboard OSD using OSD_TYPE 1 (MAX7456 driver) is supported by default. 
+Onboard OSD using OSD_TYPE 1 (MAX7456 driver) is supported by default. Simultaneously, DisplayPort OSD is available on the HD VTX connector.
+
+## VTX Support
+
+The SH1.0-6P connector supports a DJI Air Unit / HD VTX connection. Protocol defaults to DisplayPort. Pin 1 of the connector is 10v so be careful not to connect this to a peripheral requiring 5v. DisplayPort OSD is enabled by default on SERIAL8.
+
+## VTX power control
+
+GPIO 83 controls the VTX BEC output to pins marked "12V" and is included on the HD VTX connector. Setting this GPIO low removes voltage supply to this pin/pad. By default RELAY3 is configured to control this pin and sets the GPIO high.
 
 ## PWM Output
 
-The ITWL-FPV1.1 supports up to 10 PWM outputs. The pads for motor output
+The SPEDIX F405 supports up to 12 PWM outputs. The pads for motor output
 M1 to M12 are provided on the motor connector.
 
 The PWM is in 4 groups:
 
-* PWM 1-4 in group1 (TIM1)
-* PWM 5-8 in group2 (TIM2)
-* PWM 9-10 in group3 (TIM3)
+* PWM 1-4 in group1
+* PWM 5-8 in group2
+* PWM 9-12 in group3
 
 Channels within the same group need to use the same output rate. If
 any channel in a group uses DShot then all channels in the group need
-to use DShot.
+to use DShot. Channels 1-8 support bi-directional dshot.
 
 ## Battery Monitoring
 
 The board has a internal voltage sensor and connections on the ESC connector for an external current sensor input.
-The voltage sensor can handle up to 12S LiPo batteries.
+The voltage sensor can handle up to 6S LiPo batteries.
 
 The default battery parameters are:
 
@@ -75,25 +81,24 @@ The default battery parameters are:
 
 ## Compass
 
-The TWL-FPV1.1 have a compass on IMU module. Also can attach an external compass using I2C on the SDA and SCL connector.
+The AEDROXH7 does not have a built-in compass, but you can attach an external compass using I2C on the SDA and SCL connector.
 
 ## GPIOs
 
 The numbering of the GPIOs for PIN variables in ardupilot is:
 
- - GPIO pin KAMERA A/B switches camera A or B to OSD
  - GPIO1 pin is ArduPilot GPIO 81
  - GPIO2 pin is ArduPilot GPIO 82
 
 ## Physical
 
-- Mounting: 30.4 x 30.5mm
-- Dimensions: 38 x 50 x 10 mm
+- Mounting: 30.5 x 30.5mm, 4mm
+- Dimensions: 50 x 50 x 5 mm
 - Weight: ?.?g
 
 ## Firmware
 
-Firmware for the ITWL-FPV is available from //Z58/Pracownia SOIR/1. PROJEKTY/autopilot/ardupilot
+Firmware for the ITWL-FPV is available from [ArduPilot Firmware Server](https://firmware.ardupilot.org) under the `AEDROXH7` target.
 
 ## Loading Firmware
 

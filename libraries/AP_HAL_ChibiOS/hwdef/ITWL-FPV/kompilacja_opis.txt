@@ -1,0 +1,157 @@
+cd ardupilot
+./waf configure --board ITWL-FPV
+./waf configure --board ITWL-FPV --vs-launch --debug --enable-asserts
+./waf copter --board ITWL-FPV
+
+//token classic
+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
+
+//opis
+--vs-launch <-generuje konfigurację .vscode/settings
+--board ITWL-FPV <- wybór autopilota
+--debug <- dodaje symbole do kodu aby można było pracować w debugerze
+
+code tunel <- uruchamia VS Code
+
+sim_vehicle.py -v ArduCopter -f quad --console --map -D
+./sim_vehicle.py --console --map -A --serial5=uart:/dev/ttyS15:115200
+
+
+polecenia openocd:
+openocd -f interface/ftdi/jtag-lock-pick_tiny_2.cfg -f target/stm32h7x.cfg -c "transport select hla_swd"
+openocd -f interface/stlink.cfg -f target/stm32h7x.cfg -c "transport select hla_swd"
+
+//wymusza na gDB załadowanie właściwego pliku z symbolami
+file build/ITWL-FPV/bin/arducopter
+
+
+zmiana hasła WSL:
+1) otworzyć terminal
+2) zmienić użytkownika na root: wsl -u root
+3) ustawić hasło: passwd Piotr
+
+//budowanie bootloadera
+Tools/scripts/build_bootloaders.py ITWL-FPV
+
+debugowanie kodu programu w VSC
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug STM32H743 (ST-Link V3)",
+      "type": "cortex-debug",
+      "request": "launch",
+      "servertype": "openocd",
+      "cwd": "${workspaceRoot}",
+      "executable": "${workspaceRoot}/build/arducopter",
+      "device": "STM32H743ZI",
+      "configFiles": [
+        "interface/stlink.cfg",
+        "target/stm32h7x.cfg"
+      ],
+      "svdFile": "${workspaceRoot}/STM32H743.svd",
+      "runToMain": true,
+      "preLaunchTask": "build"
+    },
+
+
+debugowanie bootloadera
+     "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Bootloader ITWL-FPV",
+            "type": "cortex-debug",
+            "request": "launch",
+            "servertype": "openocd",
+            "cwd": "${workspaceRoot}",
+            "executable": "${workspaceFolder}/Tools/bootloaders/ITWL-FPV_bl.elf",
+            "device": "STM32H743ZI",
+            "servertype": "openocd",
+            "serverpath": "C:/tools/openocd-0.12/bin/openocd.exe",
+            "configFiles": [
+                "interface/stlink.cfg",
+                "target/stm32h7x.cfg"
+            ],
+            "runToMain": true,
+            "svdFile": "${workspaceFolder}STM32H7xx.svd",
+            "showDevDebugOutput": true,
+            "preLaunchTask": "",
+            "postRestartCommands": [
+                "monitor reset halt"
+            ],
+            "pathMapping": {
+                "/home/user/ardupilot": "C:/Projekty/autopilot/ardupilot"
+            }
+        }
+    ]
+}
+
+//task
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "type": "shell",
+      "command": "waf",
+      "args": [
+        "build"
+      ],
+      "problemMatcher": []
+    }
+  ]
+}
+
+//ustawianie pułapki
+break Reset_Handler
+break HardFault_Handler
+break AP_HAL::init
+break AP::init
+break AP_InertialSensor::init
+break AP_InertialSensor::detect_backends
+
+//GDB pokaż co jest pod adresem: x/<liczba><format><rozmiar> <adres>
+x/1 wx 0x802038b     
+
+info register //pokaż zawartość rejestrów
+
+p/x *(uint32_t*)0xE000ED2C	zawartość HFSR Bit 30= force HF, bit 1=Bus fault
+Najważniejsze rejestry SCB i ich adresy:
+CFSR (Configurable Fault Status Register) – 0xE000ED28
+HFSR (HardFault Status Register) – 0xE000ED2C
+DFSR (Debug Fault Status Register) – 0xE000ED30
+MMFAR (MemManage Fault Address Register) – 0xE000ED34
+BFAR (BusFault Address Register) – 0xE000ED38
+AFSR (Auxiliary Fault Status Register) – 0xE000ED3C
+SHCSR (System Handler Control and State Register) – 0xE000ED24
+CFSR with a word access to 0xE000ED28.
+MMFSR with a byte access to 0xE000ED28.
+MMFSR and BFSR with a halfword access to 0xE000ED28.
+BFSR with a byte access to 0xE000ED29. bit[0]=IACCVIOL The processor attempted an instruction fetch from a location that does not permit execution.
+UFSR with a halfword access to 0xE000ED2A.
+
+instrukcje w okolicy PC
+x/4i $pc
+
+//instrukcje zdjete z stosu jakie wykonywał przed HardFault
+x/4i *(unsigned int*)($sp+24)
+
+//sprawdzenie która wersja jest zlinkowana
+arm-none-eabi-nm build/ITWL-FPV/arducopter.elf | grep cpu_init     
+
+//dodanie ścieżki do narzędzi ARM do PATH 
+export PATH=$PATH:/opt/gcc-arm-none-eabi-10-2020-q4-major/bin
+
+//jeżeli brak OpenOSD, nie widzi urządzenia USB w WSL to w PowerShell:
+usbipd list
+//powinna pojawić się lista urządzeń:
+//5-2    0403:8220  JTAG-lock-pick Tiny 2  
+usbipd attach --wsl --busid 5-2
+
+//ręczne uruchomienie Open OCD
+openocd \
+  -f interface/ftdi/jtag-lock-pick_tiny_2.cfg \
+  -c "transport select swd" \
+  -c "adapter speed 1000" \
+  -c "reset_config connect_assert_srst" \
+  -f target/stm32h7x_dual_bank.cfg
