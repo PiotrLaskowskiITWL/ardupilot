@@ -239,8 +239,10 @@ PC7  TIM3_CH2 TIM3  PWM(10) GPIO(61)
 
 ##############################################################################################
 # GPIOs
-PE12 PINIO1 OUTPUT GPIO(81) LOW     # kamera A/B
+
 PA15  PAD1 INPUT                    # SCCARD Detect
+PE12 PINIO1 OUTPUT GPIO(81) LOW     # kamera A/B
+define RELAY1_PIN_DEFAULT 81
 
 # niewykorzytane piny ustaw jako wejścia
 PB2  NC1  INPUT
@@ -315,10 +317,10 @@ PD4 CS_BARO CS
 # define HAL_BARO_ALLOW_INIT_NO_BARO    
 
 # SPI1 OSD
-# PA5 SPI1_SCK SPI1
-# PA6 SPI1_MISO SPI1
-# PA7 SPI1_MOSI SPI1
-# PE10 CS_OSD CS
+PA5 SPI1_SCK SPI1
+PA6 SPI1_MISO SPI1
+PA7 SPI1_MOSI SPI1
+PE10 CS_OSD CS
 
 # Now the SPI device table. This table creates all accessible SPI
 # devices, giving the name of the device (which is used by device
@@ -339,13 +341,14 @@ PD4 CS_BARO CS
 SPIDEV icm42653 SPI4 DEVID1 CS_IMU MODE3  2*MHZ  8*MHZ
 # SPIDEV icm42688 SPI4 DEVID1 CS_IMU MODE0  2*MHZ  8*MHZ
 SPIDEV bmp581   SPI4 DEVID2 CS_BARO MODE0  2*MHZ  8*MHZ
-# SPIDEV osd      SPI1 DEVID3 CS_OSD  MODE0 2*MHZ 10*MHZ
+SPIDEV osd      SPI1 DEVID3 CS_OSD  MODE0 2*MHZ 10*MHZ
 
 #DMA_PRIORITY SDMMC* USART6* ADC* UART* USART* SPI* TIM*
 
 # IMUs
-IMU Invensensev3 SPI:icm42653 ROTATION_ROLL_180_YAW_90      #docelowy uklad, obrót do ustalenia
+# IMU Invensensev3 SPI:icm42653 ROTATION_ROLL_180_YAW_90      #docelowy uklad, obrót do ustalenia
 # IMU Invensensev3 SPI:icm42688 ROTATION_ROLL_180
+IMU Invensensev3 SPI:icm42653 ROTATION_ROLL_180
 
 #define AP_BARO_MSP_ENABLED 1
 #define AP_BARO_SPI_BUS 4
@@ -379,9 +382,9 @@ define FATFS_HAL_DEVICE SDCD1
 
 ##############################################################################################
 # OSD
-# define OSD_ENABLED 1
-# define HAL_OSD_TYPE_DEFAULT 5 # MSP Displayport
-# define HAL_OSD_TYPE_DEFAULT 1
-# ROMFS_WILDCARD libraries/AP_OSD/fonts/font*.bin
-# include ../include/minimize_fpv_osd.inc
+define OSD_ENABLED 1
+define HAL_OSD_TYPE_DEFAULT 1
+ROMFS_WILDCARD libraries/AP_OSD/fonts/font*.bin
+ROMFS_WILDCARD libraries/AP_OSD/fonts/font0.bin
+include ../include/minimize_fpv_osd.inc
 
