@@ -197,19 +197,21 @@ PB7 I2C4_SDA I2C4   PULLUP
 # COMPASS
 define AP_PERIPH_MAG_ENABLED 1
 COMPASS MMC3416 I2C:0:0x30 false ROTATION_YAW_270
+COMPASS_ORIENT = ROTATION_NONE
+COMPASS_ORIENT2 = ROTATION_YAW_180
+COMPASS_ORIENT3 = ROTATION_NONE
 define HAL_COMPASS_MAX_SENSORS 3
 
-# no built-in compass, but probe the i2c bus for all possible
-# external compass types
-# define HAL_PROBE_EXTERNAL_I2C_COMPASSES
+# probe the i2c bus for all possible external compass types
+define HAL_PROBE_EXTERNAL_I2C_COMPASSES
 define AP_COMPASS_PROBING_ENABLED 1
 
 ##############################################################################################
 # PWM output pins
-PE14 TIM1_CH4 TIM1  PWM(1) GPIO(50)
-PE13 TIM1_CH3 TIM1  PWM(2) GPIO(51)	
-PE11 TIM1_CH2 TIM1  PWM(3) GPIO(52) 
-PE9  TIM1_CH1 TIM1  PWM(4) GPIO(53)	
+PE14 TIM1_CH4 TIM1  PWM(1) MOTOR
+PE13 TIM1_CH3 TIM1  PWM(2) MOTOR	
+PE11 TIM1_CH2 TIM1  PWM(3) MOTOR
+PE9  TIM1_CH1 TIM1  PWM(4) MOTOR
 PA3  TIM2_CH4 TIM2  PWM(5) GPIO(54) 
 PA2  TIM2_CH3 TIM2  PWM(6) GPIO(55)
 PA1  TIM2_CH2 TIM2  PWM(7) GPIO(56) 
@@ -257,6 +259,7 @@ PD7  NC9  INPUT
 PB3  NC10 INPUT
 PB5  NC11 INPUT
 
+
 ##############################################################################################
 # LEDs
 PE4  LED_GREEN OUTPUT HIGH GPIO(0) 
@@ -279,29 +282,35 @@ define HAL_GPIO_C_LED_PIN 2
 # tables in STM32F427xx.py.
 # ADC Probes
 
-define HAL_USE_ADC TRUE
-define STM32_ADC_USE_ADC1 TRUE
-
-PC3 BATT2_VOLTAGE_SENS ADC1 SCALE(1)    #czujnik nr 10 napięcie baterii napedowej
-PC2 BATT2_CURRENT_SENS ADC1 SCALE(1)    #czujnik nr 11 prąd z czujnika w ESC
-# PC1 BATT_VOLTAGE_SENS ADC1 SCALE(1)     #czujnik nr 12
-# PC0 BATT_VOLTAGE_SENS ADC1 SCALE(1)     #czujnik nr 13
-# PA4 BATT_VOLTAGE_SENS ADC1 SCALE(1)     #czujnik nr 14 monitor 5V
-# PC4 BATT_VOLTAGE_SENS ADC1 SCALE(1)     #czujnik nr 15
-# PC5 BATT_VOLTAGE_SENS ADC1 SCALE(1)     #czujnik nr 16
-
-# Analog battery input scaling
-# See folder hwdef>scripts>STM32H743xx.py
+# define HAL_USE_ADC TRUE
+# define STM32_ADC_USE_ADC1 TRUE
 define HAL_BATT_MONITOR_DEFAULT 4
-define HAL_BATT_VOLT_SCALE 16.0
+
+PC4 BATT_VOLTAGE_SENS ADC1 SCALE(1)     #czujnik ADC1.INP4: pad AN1
+define HAL_ADC_SENSOR1_PIN  4
+
+PC5 BATT_VOLTAGE_SENS ADC1 SCALE(1)     #czujnik ADC1.INP8: pad AN2
+define HAL_ADC_SENSOR2_PIN  8
+
+PC0 BATT_VOLTAGE_SENS ADC1 SCALE(1)     #czujnik ADC1.INP10: pad AN3
+define HAL_ADC_SENSOR3_PIN  10
+
+PC1 BATT_VOLTAGE_SENS ADC1 SCALE(1)     #czujnik ADC1.INP11: pad AN4
+# define HAL_ADC_SENSOR4_PIN  11
+define HAL_BATT_VOLT_PIN 11
+
+PC2 BATT_CURRENT_SENS ADC1 SCALE(1)     #czujnik ADC1.INP12: prąd z czujnika w ESC
+define HAL_BATT_CURR_PIN 12
 define HAL_BATT_CURR_SCALE 2.0
-# define HAL_BATT_VOLT_PIN 10
-# define HAL_BATT_CURR_PIN 11
-# define HAL_ADC_SENSOR1_PIN  12
-# define HAL_ADC_SENSOR2_PIN  13
-# define HAL_ADC_SENSOR3_PIN  14
-# define HAL_ADC_SENSOR4_PIN  15
-# define HAL_ADC_SENSOR5_PIN  16
+
+PC3 BATT_VOLTAGE_SENS ADC1 SCALE(1)     #czujnik ADC1.INP13: napięcie baterii napedowej
+# define HAL_BATT_VOLT_PIN 13           #PC3 nie działa - zamienione na PC1 = AN4
+define HAL_BATT_VOLT_SCALE 16.0
+define BATT_VOLT_MULT 16.0
+
+# PA4 BATT_VOLTAGE_SENS ADC1 SCALE(1)     #czujnik ADC1.INP18: monitor 5V podłaczony przez dzielnik /2
+# define ANALOG_VCC_5V_PIN 18
+# define ANALOG_VCC_5V_SCALE 2.0
 
 
 ##############################################################################################
@@ -385,6 +394,5 @@ define FATFS_HAL_DEVICE SDCD1
 define OSD_ENABLED 1
 define HAL_OSD_TYPE_DEFAULT 1
 ROMFS_WILDCARD libraries/AP_OSD/fonts/font*.bin
-ROMFS_WILDCARD libraries/AP_OSD/fonts/font0.bin
-include ../include/minimize_fpv_osd.inc
-
+# ROMFS_WILDCARD libraries/AP_OSD/fonts/font0.bin
+# include ../include/minimize_fpv_osd.inc

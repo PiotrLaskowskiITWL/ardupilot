@@ -144,7 +144,7 @@
       ]
     },
     {
-      "name": "Debug Bootloader ITWL-FPV1_1 (jtag-lock-pick_tiny2)",
+      "name": "Debug Bootloader ITWL-FPV (jtag-lock-pick_tiny2)",
       "type": "cortex-debug",
       "servertype": "external",
       "gdbTarget": "localhost:3333",
@@ -170,7 +170,7 @@
       "request": "attach",
       "servertype": "external",
       "gdbTarget": "localhost:3333",
-      "executable": "${workspaceFolder}/Tools/bootloaders/ITWL-FPV1_1_bl.elf",
+      "executable": "${workspaceFolder}/Tools/bootloaders/ITWL-FPV_bl.elf",
       "gdbPath": "/usr/bin/gdb-multiarch",
       "device": "STM32H743ZI",
       "showDevDebugOutput": "raw",
@@ -184,7 +184,7 @@
       "request": "attach",
       "servertype": "external",
       "gdbTarget": "localhost:3333",
-      "executable": "${workspaceRoot}/build/ITWL-FPV1_1/bin/arducopter",
+      "executable": "${workspaceRoot}/build/ITWL-FPV/bin/arducopter",
       "gdbPath": "/usr/bin/gdb-multiarch",
       "device": "STM32H743ZI",
       "showDevDebugOutput": "raw",
