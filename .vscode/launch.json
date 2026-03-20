@@ -61,7 +61,7 @@
       "showDevDebugOutput": "raw",
       "runToEntryPoint": "Reset_Handler",
       "configFiles": [
-        "interface/stlink-v2-1.cfg",
+        "interface/stlink.cfg",
         "target/stm32h7x_dual_bank.cfg"
       ],
       "openOCDLaunchCommands": [

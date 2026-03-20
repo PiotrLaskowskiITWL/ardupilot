@@ -42,6 +42,7 @@
 extern "C" {
     int main(void);
 }
+volatile uint32_t  test_var = 0xDEADBEEF;
 
 struct boardinfo board_info = {
     .board_type = APJ_BOARD_ID,
